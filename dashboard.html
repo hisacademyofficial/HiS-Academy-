@@ -339,19 +339,22 @@
   const db = firebase.firestore();
 
   auth.onAuthStateChanged((user)=>{
-    if(user){
-      db.collection("students").doc(user.uid).get()
-      .then(doc=>{
-        if(!doc.exists || doc.data().paymentStatus !== "paid"){
-          window.location.href="profile.html";
-        }
-        document.getElementById("studentName").innerText = doc.data().name;
-      });
-    } else {
-      window.location.href="login.html";
-    }
-  });
+  if(user){
 
+    db.collection("students").doc(user.uid).get()
+    .then(doc=>{
+      if(doc.exists){
+        document.getElementById("studentName").innerText = doc.data().name;
+      } else {
+        document.getElementById("studentName").innerText = "Student";
+      }
+    });
+
+  } else {
+    // Login compulsory
+    window.location.href="index.html";
+  }
+});
   const examDate = new Date("March 18, 2026 10:00:00").getTime();
   setInterval(()=>{
     const now = new Date().getTime();
