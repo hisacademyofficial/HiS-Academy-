@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HiS Academy Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    body{
+      margin:0;
+      font-family:Poppins, sans-serif;
+      background:linear-gradient(135deg,#0f0f1a,#1a1a2e);
+      color:white;
+      padding-bottom: 80px;
+
+    }
+
+    .container{
+      padding:20px;
+      max-width:1000px;
+      margin:auto;
+    }
+
+    h2{
+      color:#FFD700;
+    }
+
+    .banner{
+      background:linear-gradient(90deg,#FFD700,#ffcc00);
+      color:black;
+      padding:15px;
+      border-radius:15px;
+      font-weight:bold;
+      text-align:center;
+      margin-bottom:20px;
+    }
+
+    .card{
+      background:#111827;
+      padding:20px;
+      border-radius:18px;
+      margin-bottom:20px;
+      box-shadow:0 0 25px rgba(255,215,0,0.15);
+    }
+
+    /* Countdown */
+    .countdown{
+      color:#FFD700;
+      font-weight:bold;
+      margin-top:10px;
+    }
+
+    /* Motivation Slider */
+    .slider{
+      display:flex;
+      overflow-x:auto;
+      gap:15px;
+    }
+
+    .slide{
+      min-width:260px;
+      background:#1f2937;
+      padding:15px;
+      border-radius:15px;
+      text-align:center;
+    }
+.slider{
+  display:flex;
+  overflow:hidden;
+  gap:15px;
+}
+
+    .slide img{
+    width:100%;
+    height:auto;
+    object-fit: contain;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
+
+    /* Batches */
+    .batch-container{
+      display:flex;
+      gap:15px;
+      overflow-x:auto;
+    }
+
+    .batch-card{
+      min-width:260px;
+      background:#1f2937;
+      border-radius:15px;
+      overflow:hidden;
+      position:relative;
+      cursor:pointer;
+      flex-shrink:0;
+    }
+
+    .batch-card img{
+      width:100%;
+      height:140px;
+      object-fit:cover;
+      display:block;
+    }
+
+    .batch-info{
+      padding:12px;
+      text-align:center;
+    }
+
+    .batch-title{
+      font-weight:bold;
+      margin-bottom:5px;
+    }
+
+    /* Locked Overlay */
+    .locked-overlay{
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:140px;
+      background:rgba(0,0,0,0.6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      font-weight:bold;
+      color:#FFD700;
+    }
+
+    @keyframes shake{
+      0%{transform:translateX(0);}
+      25%{transform:translateX(-5px);}
+      50%{transform:translateX(5px);}
+      75%{transform:translateX(-5px);}
+      100%{transform:translateX(0);}
+    }
+
+    .shake{
+      animation:shake 0.3s;
+    }
+
+    /* Buttons */
+    .btn{
+      width:100%;
+      padding:14px;
+      border-radius:12px;
+      border:none;
+      font-weight:bold;
+      cursor:pointer;
+      margin-top:10px;
+    }
+
+    .live-btn{background:#FFD700;color:black;}
+    .record-btn{background:#1f2937;color:white;border:1px solid #FFD700;}
+    .call-btn{background:#25D366;color:white;}
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:65px;
+  background:#111827;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  box-shadow:0 -5px 20px rgba(255,215,0,0.1);
+  z-index:1000;
+}
+
+.nav-item{
+  text-align:center;
+  font-size:12px;
+  cursor:pointer;
+  color:#aaa;
+}
+
+.nav-item span{
+  display:block;
+  font-size:20px;
+}
+
+.nav-item.active{
+  color:#FFD700;
+}
+.master-btn{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:10px;
+  border:none;
+  font-weight:bold;
+  background:#FFD700;
+  color:black;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.master-btn:hover{
+  transform:translateY(-3px);
+}
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h2>Hi, <span id="studentName">Student</span> 👋</h2>
+
+  <div class="banner">
+    Stay Consistent. 90+ Is Possible. Your Future Is Watching.
+  </div>
+
+  <!-- Countdown -->
+  <div class="card">
+    <h3>Time Left for SSLC Exam</h3>
+    <div class="countdown" id="countdown"></div>
+  </div>
+
+  <!-- Motivation -->
+  <div class="card">
+    <h3>You need to score 90+</h3>
+    <div class="slider">
+
+      <div class="slide">
+        <img src="manjunath.JPG">
+        <p>"The harder you work for something, the greater you'll feel when you achieve it."</p>
+      </div>
+
+      <div class="slide">
+        <img src="mot1.jpg">
+        <p>"Success doesn’t come from comfort zones."</p>
+      </div>
+
+      <div class="slide">
+        <img src="mot2.jpg">
+        <p>"Discipline today. Result tomorrow."</p>
+      </div>
+
+      <div class="slide">
+        <img src="mot3.jpg">
+        <p>"Fear of exam? Good. Use it."</p>
+      </div>
+
+      <div class="slide">
+        <img src="mot4.jpg">
+        <p>"90+ is not luck. It is preparation."</p>
+      </div>
+
+    </div>
+  </div>
+<!-- Master Plan Button -->
+<div class="card">
+  <h3 style="color:#FFD700;">📘 SSLC 2026 Master Plan</h3>
+  <p>Your 346 Hour Structured Study Calendar</p>
+
+  <button class="master-btn" onclick="openTimetable()">
+    View Study Timetable
+  </button>
+</div>
+
+  <!-- Batches -->
+  <div class="card">
+    <h3>Batches</h3>
+
+    <div class="batch-container">
+
+      <!-- Unlocked -->
+      <div class="batch-card" onclick="openRecorded()">
+        <img src="sslc.jpg">
+        <div class="batch-info">
+          <div class="batch-title">SSLC 2026 Crash Course</div>
+          <div>Study Now</div>
+        </div>
+      </div>
+
+      <!-- Locked -->
+      <div class="batch-card" onclick="locked(this)">
+        <img src="neet.jpg">
+        <div class="locked-overlay">🔒 Locked</div>
+        <div class="batch-info">
+          <div class="batch-title">NEET 2026</div>
+        </div>
+      </div>
+
+      <div class="batch-card" onclick="locked(this)">
+        <img src="kcet.jpg">
+        <div class="locked-overlay">🔒 Locked</div>
+        <div class="batch-info">
+          <div class="batch-title">KCET Mastery</div>
+        </div>
+      </div>
+
+      <div class="batch-card" onclick="locked(this)">
+        <img src="booster.jpg">
+        <div class="locked-overlay">🔒 Locked</div>
+        <div class="batch-info">
+          <div class="batch-title">Exam Booster</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <button class="btn live-btn" onclick="openLive()">
+    ▶ Watch Live Classes
+  </button>
+
+  <button class="btn record-btn" onclick="openRecorded()">
+    🎥 Watch Recorded Classes
+  </button>
+
+  <button class="btn call-btn" onclick="callNow()">
+    📞 Speak to Manjunath Sir
+  </button>
+
+</div>
+
+<script>
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCehyZQukDfslKTY_u9yXcUrzGtMNHvuPA",
+    authDomain: "his-academy.firebaseapp.com",
+    projectId: "his-academy",
+    storageBucket: "his-academy.firebasestorage.app",
+    messagingSenderId: "573278549264",
+    appId: "1:573278549264:web:ca2ff160b5a100cc7d2195",
+    measurementId: "G-8WPMS7H33F"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  auth.onAuthStateChanged((user)=>{
+    if(user){
+      db.collection("students").doc(user.uid).get()
+      .then(doc=>{
+        if(!doc.exists || doc.data().paymentStatus !== "paid"){
+          window.location.href="profile.html";
+        }
+        document.getElementById("studentName").innerText = doc.data().name;
+      });
+    } else {
+      window.location.href="login.html";
+    }
+  });
+
+  const examDate = new Date("March 18, 2026 10:00:00").getTime();
+  setInterval(()=>{
+    const now = new Date().getTime();
+    const dist = examDate - now;
+
+    const d = Math.floor(dist/(1000*60*60*24));
+    const h = Math.floor((dist%(1000*60*60*24))/(1000*60*60));
+    const m = Math.floor((dist%(1000*60*60))/(1000*60));
+    const s = Math.floor((dist%(1000*60))/1000);
+
+    document.getElementById("countdown").innerHTML =
+      d+"d "+h+"h "+m+"m "+s+"s remaining";
+  },1000);
+
+  function locked(el){
+    el.classList.add("shake");
+    setTimeout(()=>el.classList.remove("shake"),300);
+  }
+
+  function openRecorded(){
+    window.location.href="recorded.html";
+  }
+
+  function openLive(){
+    window.location.href="live.html";
+  }
+
+  function callNow(){
+    window.location.href="tel:02269719375";
+  }
+// 🔥 Netflix Style Infinite Smooth Scroll
+const slider = document.querySelector('.slider');
+
+if (slider) {
+
+  // Clone slides for infinite effect
+  slider.innerHTML += slider.innerHTML;
+
+  let scrollSpeed = 0.5; // lower = slower
+  let scrollPosition = 0;
+
+  function autoScroll() {
+    scrollPosition += scrollSpeed;
+    slider.scrollLeft = scrollPosition;
+
+    // Reset when half reached
+    if (scrollPosition >= slider.scrollWidth / 2) {
+      scrollPosition = 0;
+    }
+
+    requestAnimationFrame(autoScroll);
+  }
+
+  autoScroll();
+}
+
+function goDashboard(){
+  window.location.href = "dashboard.html";
+}
+
+function goLive(){
+  window.location.href = "live.html";
+}
+
+function goRecorded(){
+  window.location.href = "recorded.html";
+}
+
+function goNotes(){
+  window.location.href = "notes.html";
+}
+
+function goProfile(){
+  window.location.href = "profile.html";
+}
+
+function openTimetable(){
+  window.location.href = "timetable.html";
+}
+
+
+</script>
+<div class="bottom-nav">
+
+  <div class="nav-item active" onclick="goDashboard()">
+    <span>🏠</span>
+    Dashboard
+  </div>
+
+  <div class="nav-item" onclick="goLive()">
+    <span>🔴</span>
+    Live
+  </div>
+
+  <div class="nav-item" onclick="goNotes()">
+    <span>📄</span>
+    Notes
+  </div>
+
+  <div class="nav-item" onclick="goRecorded()">
+    <span>🎥</span>
+    Recorded
+  </div>
+
+  <div class="nav-item" onclick="goProfile()">
+    <span>👤</span>
+    Profile
+  </div>
+
+</div>
+
+</body>
+</html>

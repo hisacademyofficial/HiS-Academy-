@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Class - HIS Academy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    body{
+      margin:0;
+      font-family:Poppins, sans-serif;
+      background:linear-gradient(135deg,#0f0f1a,#1a1a2e);
+      color:white;
+      padding-bottom: 80px;
+
+    }
+
+    .header{
+      background:#111827;
+      padding:15px;
+      text-align:center;
+      font-size:20px;
+      font-weight:bold;
+      color:#FFD700;
+      box-shadow:0 0 20px rgba(255,215,0,0.2);
+    }
+
+    .container{
+      padding:15px;
+      max-width:1000px;
+      margin:auto;
+      position:relative;
+    }
+
+    .card{
+      background:#111827;
+      border-radius:15px;
+      padding:20px;
+      margin-bottom:20px;
+      box-shadow:0 0 25px rgba(255,215,0,0.15);
+      position:relative;
+    }
+
+    .live-badge{
+      display:inline-block;
+      background:red;
+      padding:5px 10px;
+      border-radius:20px;
+      font-size:14px;
+      margin-left:10px;
+      animation:pulse 1s infinite;
+    }
+
+    @keyframes pulse{
+      0%{opacity:1;}
+      50%{opacity:0.5;}
+      100%{opacity:1;}
+    }
+
+    video{
+      width:100%;
+      border-radius:12px;
+    }
+
+    .title{
+      font-size:18px;
+      font-weight:bold;
+      color:#FFD700;
+      margin-bottom:5px;
+    }
+
+    .desc{
+      font-size:14px;
+      opacity:0.8;
+      margin-bottom:15px;
+    }
+
+    .watermark{
+      position:absolute;
+      top:60px;
+      left:60px;
+      color:rgba(255,255,255,0.15);
+      font-size:18px;
+      font-weight:bold;
+      pointer-events:none;
+      animation:moveWatermark 12s infinite alternate;
+      z-index:999;
+    }
+
+    @keyframes moveWatermark{
+      0%{ transform: translate(0,0); }
+      100%{ transform: translate(250px,200px); }
+    }
+
+    .btn{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:none;
+      font-weight:bold;
+      cursor:pointer;
+      margin-top:10px;
+    }
+
+    .back-btn{
+      background:#1f2937;
+      color:white;
+      border:1px solid #FFD700;
+    }
+
+    .call-btn{
+      background:#25D366;
+      color:white;
+    }
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:65px;
+  background:#111827;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  box-shadow:0 -5px 20px rgba(255,215,0,0.1);
+  z-index:1000;
+}
+
+.nav-item{
+  text-align:center;
+  font-size:12px;
+  cursor:pointer;
+  color:#aaa;
+}
+
+.nav-item span{
+  display:block;
+  font-size:20px;
+}
+
+.nav-item.active{
+  color:#FFD700;
+}
+
+  </style>
+</head>
+<body>
+
+<div class="header">
+  H I S Academy 
+  <span class="live-badge">🔴 LIVE</span>
+</div>
+
+<div class="container">
+
+  <!-- Watermark -->
+  <div class="watermark" id="watermarkText">
+    Loading...
+  </div>
+
+  <!-- Live Video Card -->
+  <div class="card">
+
+    <div class="title">
+      SSLC 2026 – Maths Strategy Masterclass
+    </div>
+
+    <div class="desc">
+      Mentor: Manjunath Sir | Target: 90+ Marks  
+      Stay focused. Notes will be shared after class.
+    </div>
+
+    <video controls controlsList="nodownload">
+      <source src="live.mp4" type="video/mp4">
+    </video>
+
+  </div>
+
+  <!-- Attendance / Info -->
+  <div class="card">
+    ✅ Your attendance has been marked automatically.  
+    ⏳ Stay till the end for important exam strategy.
+  </div>
+
+  <button class="btn back-btn" onclick="goBack()">
+    ⬅ Back to Dashboard
+  </button>
+
+
+</div>
+
+<script>
+
+  document.addEventListener("contextmenu", event => event.preventDefault());
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCehyZQukDfslKTY_u9yXcUrzGtMNHvuPA",
+    authDomain: "his-academy.firebaseapp.com",
+    projectId: "his-academy"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  auth.onAuthStateChanged((user)=>{
+    if(user){
+      db.collection("students").doc(user.uid).get()
+      .then(doc=>{
+        if(!doc.exists || doc.data().paymentStatus !== "paid"){
+          window.location.href="profile.html";
+        }
+
+        document.getElementById("watermarkText").innerText =
+          doc.data().phone + " | " + doc.data().email;
+      });
+    } else {
+      window.location.href="login.html";
+    }
+  });
+
+  function goBack(){
+    window.location.href="dashboard.html";
+  }
+
+  function callNow(){
+    window.location.href="tel:02269719375";
+  }
+function goDashboard(){
+  window.location.href = "dashboard.html";
+}
+
+function goLive(){
+  window.location.href = "live.html";
+}
+
+function goRecorded(){
+  window.location.href = "recorded.html";
+}
+
+function goNotes(){
+  window.location.href = "notes.html";
+}
+
+function goProfile(){
+  window.location.href = "profile.html";
+}
+
+</script>
+<div class="bottom-nav">
+
+  <div class="nav-item active" onclick="goDashboard()">
+    <span>🏠</span>
+    Dashboard
+  </div>
+
+  <div class="nav-item" onclick="goLive()">
+    <span>🔴</span>
+    Live
+  </div>
+
+  <div class="nav-item" onclick="goNotes()">
+    <span>📄</span>
+    Notes
+  </div>
+
+  <div class="nav-item" onclick="goRecorded()">
+    <span>🎥</span>
+    Recorded
+  </div>
+
+  <div class="nav-item" onclick="goProfile()">
+    <span>👤</span>
+    Profile
+  </div>
+
+</div>
+
+</body>
+</html>
