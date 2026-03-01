@@ -127,7 +127,7 @@ p<!DOCTYPE html>
   <div class="card">
 
     <div class="title">
-      SSLC 2026 – Maths Strategy Masterclass
+      SSLC 2026 – 90+ Strategy Masterclass
     </div>
 
     <div class="desc">
@@ -144,36 +144,45 @@ p<!DOCTYPE html>
 
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script>
 
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "his-academy.firebaseapp.com",
+  projectId: "his-academy"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+let liveLink = "";
+
+// Fetch live link from Firestore
+db.collection("settings").doc("live").get().then((doc)=>{
+    if(doc.exists){
+        liveLink = doc.data().link;
+    }
+});
+
 function joinLive(){
-  window.open("https://us06web.zoom.us/j/88019374728?pwd=bnOD3hR4thUsar2IWQFRNhUWo3haM8.1", "_blank");
+    if(liveLink){
+        window.open(liveLink, "_blank");
+    } else {
+        alert("Live link not updated yet!");
+    }
 }
 
 /* Bottom Navigation */
-
-function goDashboard(){
-  window.location.href = "dashboard.html";
-}
-
-function goLive(){
-  window.location.href = "live.html";
-}
-
-function goRecorded(){
-  window.location.href = "recorded.html";
-}
-
-function goNotes(){
-  window.location.href = "notes.html";
-}
-
-function goProfile(){
-  window.location.href = "profile.html";
-}
+function goDashboard(){ window.location.href="dashboard.html"; }
+function goLive(){ window.location.href="live.html"; }
+function goRecorded(){ window.location.href="recorded.html"; }
+function goNotes(){ window.location.href="notes.html"; }
+function goProfile(){ window.location.href="profile.html"; }
 
 </script>
-
 <div class="bottom-nav">
 
   <div class="nav-item" onclick="goDashboard()">
