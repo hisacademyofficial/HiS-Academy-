@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Change Live Link - HIS Academy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    body{
+      margin:0;
+      font-family:Poppins, sans-serif;
+      background:linear-gradient(135deg,#0f0f1a,#1a1a2e);
+      color:white;
+      padding:20px;
+    }
+
+    .card{
+      background:#111827;
+      padding:20px;
+      border-radius:15px;
+      box-shadow:0 0 25px rgba(255,215,0,0.15);
+      max-width:500px;
+      margin:auto;
+      margin-top:80px;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      border-radius:8px;
+      border:none;
+      margin-bottom:15px;
+    }
+
+    button{
+      width:100%;
+      padding:12px;
+      background:#25D366;
+      border:none;
+      border-radius:8px;
+      color:white;
+      font-weight:bold;
+      cursor:pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <h3>Update Live Class Link</h3>
+
+  <input type="text" id="liveLinkInput" placeholder="Paste Zoom / YouTube link here">
+
+  <button onclick="saveLink()">Save Link</button>
+</div>
+
+<script>
+
+  // 🔥 Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCehyZQukDfslKTY_u9yXcUrzGtMNHvuPA",
+    authDomain: "his-academy.firebaseapp.com",
+    projectId: "his-academy",
+    storageBucket: "his-academy.firebasestorage.app",
+    messagingSenderId: "573278549264",
+    appId: "1:573278549264:web:ca2ff160b5a100cc7d2195",
+    measurementId: "G-8WPMS7H33F"
+  };
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+function saveLink(){
+    const link = document.getElementById("liveLinkInput").value;
+
+    if(link.trim() === ""){
+        alert("Please enter a valid link");
+        return;
+    }
+
+    db.collection("settings").doc("live").set({
+        link: link
+    }).then(()=>{
+        alert("Live link updated successfully!");
+        document.getElementById("liveLinkInput").value="";
+    });
+}
+
+</script>
+
+</body>
+</html>
