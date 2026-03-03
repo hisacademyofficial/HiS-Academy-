@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HIS Academy Maths PDF Unlock</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Segoe UI, sans-serif;
+    background:#000;
+    color:white;
+    text-align:center;
+}
+
+h1{
+    color:#d4af37;
+    margin-top:30px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    padding:20px;
+}
+
+.step{
+    background:#111;
+    padding:20px;
+    margin:20px 0;
+    border-radius:10px;
+}
+
+.button{
+    padding:15px 25px;
+    margin-top:15px;
+    font-size:16px;
+    font-weight:bold;
+    border-radius:8px;
+    border:none;
+    transition:0.3s;
+}
+
+.gold{
+    background:#d4af37;
+    color:black;
+    cursor:pointer;
+}
+
+.gold:hover{
+    background:#b8962e;
+    transform:scale(1.05);
+}
+
+.locked{
+    background:#444;
+    color:#999;
+    opacity:0.4;
+    cursor:not-allowed;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>HIS Academy SSLC Maths</h1>
+
+<!-- STEP 1 -->
+<div class="step">
+<h2 style="color:#d4af37;">Step 1 – Follow Instagram (Compulsory)</h2>
+<p>Follow our official Instagram before proceeding.</p>
+<a href="https://www.instagram.com/_hisacademy?igsh=MWNtMDg0MHI0cWwxZA==" target="_blank">
+<button class="button gold" onclick="unlockStep2()">Follow Instagram</button>
+</a>
+</div>
+
+<!-- STEP 2 -->
+<div class="step">
+<h2 style="color:#d4af37;">Step 2 – Share to 5 Friends</h2>
+<p>Send this website link to 5 friends.</p>
+<button id="shareBtn" class="button locked" disabled onclick="shareWebsite()">Share to 5 Friends</button>
+</div>
+
+<!-- STEP 3 -->
+<div class="step">
+<h2 style="color:#d4af37;">Step 3 – Request PDF</h2>
+<p>After sharing, request your PDF.</p>
+<button id="pdfBtn" class="button locked" disabled onclick="requestPDF()">Download PDF</button>
+</div>
+
+</div>
+
+<script>
+
+let websiteLink = window.location.href;
+
+function unlockStep2(){
+    document.getElementById("shareBtn").disabled = false;
+    document.getElementById("shareBtn").classList.remove("locked");
+}
+
+function shareWebsite(){
+
+    let message = encodeURIComponent(
+        "Hey do you need all the Maths questions? Click this link below and download.\n\n" + https://hisacademyofficial.github.io/HiS-Academy-/1.html
+    );
+
+    let whatsappURL = "https://wa.me/?text=" + message;
+
+    window.open(whatsappURL, "_blank");
+
+    document.getElementById("pdfBtn").disabled = false;
+    document.getElementById("pdfBtn").classList.remove("locked");
+}
+
+function requestPDF(){
+
+    let message = encodeURIComponent(
+        "Sir please send me the PDF. I have sent to 5 friends."
+    );
+
+    let number = "919019708159";
+    let url = "https://wa.me/" + number + "?text=" + message;
+
+    window.open(url, "_blank");
+}
+
+</script>
+
+</body>
+</html>
