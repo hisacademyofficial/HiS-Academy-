@@ -103,8 +103,10 @@ function unlockStep2(){
 
 function shareWebsite(){
 
+    let websiteLink = "https://hisacademyofficial.github.io/HiS-Academy-/1.html";
+
     let message = encodeURIComponent(
-        "Hey do you need all the Maths questions? Click this link below and download.\n\n" + https://hisacademyofficial.github.io/HiS-Academy-/1.html
+        "Hey do you need all the Maths questions? Click this link below and download.\n\n" + websiteLink
     );
 
     let whatsappURL = "https://wa.me/?text=" + message;
@@ -114,7 +116,6 @@ function shareWebsite(){
     document.getElementById("pdfBtn").disabled = false;
     document.getElementById("pdfBtn").classList.remove("locked");
 }
-
 function requestPDF(){
 
     let message = encodeURIComponent(
